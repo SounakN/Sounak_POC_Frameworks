@@ -1,0 +1,410 @@
+plugins {
+    id 'java'
+    //id 'io.qameta.allure' version '2.8.1'
+    id "com.github.spacialcircumstances.gradle-cucumber-reporting" version "0.1.24"
+}
+
+group 'com.cucumber-allure-gradle-integration'
+version '1.0-SNAPSHOT'
+
+def cucumberVersion = '6.11.0'
+ def allureVersion = '2.16.1'
+def allurePluginVersion = '2.8.1'
+def seleniumVersion = '3.141.59'
+
+repositories {
+    mavenLocal()
+    mavenCentral()
+}
+
+dependencies {
+    implementation 'io.cucumber:cucumber-java:' + cucumberVersion
+    implementation 'io.cucumber:cucumber-junit:' + cucumberVersion
+    implementation group: 'io.qameta.allure', name: 'allure-cucumber6-jvm', version: "${allureVersion}"
+    implementation 'org.seleniumhq.selenium:selenium-java:' + seleniumVersion
+    implementation 'org.seleniumhq.selenium:selenium-chrome-driver:' + seleniumVersion
+    implementation 'com.google.guava:guava:30.1.1-jre'
+    implementation group: 'io.appium', name: 'java-client', version: '7.6.0'
+    implementation 'com.googlecode.json-simple:json-simple:1.1.1'
+    implementation 'org.apache.httpcomponents:httpclient:4.5.13'
+    implementation 'commons-lang:commons-lang:20030203.000129'
+    implementation 'com.google.code.gson:gson:2.8.8'
+    implementation 'com.testdroid:testdroid-api:2.127'
+    implementation 'com.intuit.karate:karate-junit5:1.1.0'
+    implementation group: 'io.github.bonigarcia', name: 'webdrivermanager', version: '4.4.3'
+    implementation 'org.projectlombok:lombok:1.18.20'
+    implementation 'org.projectlombok:lombok:1.18.20'
+    implementation 'org.jetbrains:annotations:20.1.0'
+    testImplementation 'io.cucumber:cucumber-junit:6.10.4'
+    testImplementation 'org.junit.vintage:junit-vintage-engine:5.7.2'
+    implementation group: 'net.masterthought', name: 'cucumber-reporting', version: '5.6.1'
+    implementation group: 'com.google.code.gson', name: 'gson', version: '2.3.1'
+    implementation 'com.github.javafaker:javafaker:1.0.2'
+    compileOnly group: 'org.projectlombok', name: 'lombok', version: '0.11.0'
+    // https://mvnrepository.com/artifact/com.microsoft.edge/msedge-selenium-tools-java
+    implementation group: 'com.microsoft.edge', name: 'msedge-selenium-tools-java', version: '3.141.0'
+    // https://mvnrepository.com/artifact/com.browserstack/browserstack-local-java
+    implementation group: 'com.browserstack', name: 'browserstack-local-java', version: '0.3.0'
+    // https://mvnrepository.com/artifact/io.rest-assured/rest-assured
+    testImplementation 'io.rest-assured:rest-assured:4.4.0'
+    // https://mvnrepository.com/artifact/io.rest-assured/xml-path
+    implementation 'io.rest-assured:xml-path:4.4.0'
+    // https://mvnrepository.com/artifact/io.rest-assured/json-schema-validator
+    implementation 'io.rest-assured:json-schema-validator:4.4.0'
+    // https://mvnrepository.com/artifact/io.rest-assured/json-path
+    implementation 'io.rest-assured:json-path:4.4.0'
+    // https://mvnrepository.com/artifact/com.opencsv/opencsv
+    implementation group: 'com.opencsv', name: 'opencsv', version: '4.0'
+    // https://mvnrepository.com/artifact/org.zaproxy/zap-clientapi
+    implementation group: 'org.zaproxy', name: 'zap-clientapi', version: '1.9.0'
+    // https://mvnrepository.com/artifact/org.zaproxy/zap
+    implementation group: 'org.zaproxy', name: 'zap', version: '2.10.0'
+    // https://mvnrepository.com/artifact/org.apache.logging.log4j/log4j-api
+    implementation 'org.apache.logging.log4j:log4j-api:2.17.2'
+// https://mvnrepository.com/artifact/org.apache.logging.log4j/log4j-core
+    implementation 'org.apache.logging.log4j:log4j-core:2.17.2'
+    // https://mvnrepository.com/artifact/org.apache.poi/poi
+    implementation 'org.apache.poi:poi:5.2.2'
+// https://mvnrepository.com/artifact/org.apache.poi/poi-scratchpad
+    implementation 'org.apache.poi:poi-scratchpad:5.2.2'
+// https://mvnrepository.com/artifact/org.apache.poi/poi-contrib
+    implementation 'org.apache.poi:poi-contrib:3.7-beta3'
+// https://mvnrepository.com/artifact/org.apache.poi/poi-examples
+    implementation 'org.apache.poi:poi-examples:5.2.2'
+// https://mvnrepository.com/artifact/org.apache.poi/poi-ooxml
+    implementation 'org.apache.poi:poi-ooxml:5.2.2'
+
+
+
+}
+test {
+       useJUnitPlatform()
+       testLogging.showStandardStreams = true
+        //To get the Env use -DEnv="The env"{UAT,STG} This is a mandatory Selection and Bby default value is staging
+       if(System.getProperty("Env")) {
+           systemProperty "Env", System.getProperty("Env")
+       }else{
+           systemProperty "Env","STG"
+       }
+
+    //Browser Properties
+       if(System.getProperty("Driver")) {
+           systemProperty "Driver", System.getProperty("Driver")
+           if (System.getProperty("Browserstack_switch")) {
+               //Setting The switch ON
+               systemProperty "Browserstack_switch", System.getProperty("Browserstack_switch")
+               if (System.getProperty("Browserstack_switch").equalsIgnoreCase("true"))
+               {
+                   //Setting OS and OS versions
+                   if (System.getProperty("os")) {
+                       systemProperty "os", System.getProperty("os")
+                   }
+                   if (System.getProperty("os_version")) {
+                       systemProperty "os_version", System.getProperty("os_version")
+                   }
+
+                   //Setting Browser Versions
+                   if (System.getProperty("browser_version_chrome")) {
+                       systemProperty "browser_version_chrome", System.getProperty("browser_version_chrome")
+                   } else if (System.getProperty("browser_version_firefox")) {
+                       systemProperty "browser_version_firefox", System.getProperty("browser_version_firefox")
+                   } else if (System.getProperty("browser_version_edge")) {
+                       systemProperty "browser_version_edge", System.getProperty("browser_version_edge")
+                   }
+               }
+           }
+       }else if(System.getProperty("Driver_mobile")) {
+           systemProperty "Driver_mobile", System.getProperty("Driver_mobile")
+
+           if(System.getProperty("Driver_mobile").equalsIgnoreCase("Android_web"))
+           {
+               if (System.getProperty("Browserstack_switch"))
+               {
+                   //Setting The switch ON
+                   systemProperty "Browserstack_switch", System.getProperty("Browserstack_switch")
+                   System.out.println(System.getProperty("Browserstack_switch"));
+                   if(System.getProperty("Browserstack_switch").equalsIgnoreCase("true"))
+                   {
+                       if(System.getProperty("Browser_mobile"))
+                       {
+                           systemProperty "Browser_mobile", System.getProperty("Browser_mobile")
+                       }
+                       if(System.getProperty("Mobile_device"))
+                       {
+                           systemProperty "Mobile_device", System.getProperty("Mobile_device")
+                       }
+                       if(System.getProperty("os_version_mobile"))
+                       {
+                           systemProperty "os_version_mobile", System.getProperty("os_version_mobile")
+                       }
+                   }
+
+               }else{
+                   if(System.getProperty("Mobile_device_android"))
+                   {
+                       systemProperty "Mobile_device_android", System.getProperty("Mobile_device_android")
+                   }
+                   if(System.getProperty("Browser_mobile_android"))
+                   {
+                       systemProperty "Browser_mobile_android", System.getProperty("Browser_mobile_android")
+                   }
+               }
+
+           }
+           else if(System.getProperty("Driver_mobile").equalsIgnoreCase("Android_Native"))
+           {
+               if (System.getProperty("Browserstack_switch")) {
+                   //Setting The switch ON
+                   systemProperty "Browserstack_switch", System.getProperty("Browserstack_switch")
+
+                   if(System.getProperty("Mobile_device"))
+                   {
+                       systemProperty "Mobile_device", System.getProperty("Mobile_device")
+                   }
+                   if(System.getProperty("os_version_mobile"))
+                   {
+                       systemProperty "os_version_mobile", System.getProperty("os_version_mobile")
+                   }
+
+               }else{
+                   if (System.getProperty("Mobile_device_android")) {
+                       systemProperty "Mobile_device_android", System.getProperty("Mobile_device_android")
+                   }
+               }
+           }
+           else if(System.getProperty("Driver_mobile").equalsIgnoreCase("IOS_Native"))
+           {
+               if (System.getProperty("Browserstack_switch")) {
+                   //Setting The switch ON
+                   systemProperty "Browserstack_switch", System.getProperty("Browserstack_switch")
+
+                   if(System.getProperty("Mobile_device"))
+                   {
+                       systemProperty "Mobile_device", System.getProperty("Mobile_device")
+                   }
+                   if(System.getProperty("os_version_mobile"))
+                   {
+                       systemProperty "os_version_mobile", System.getProperty("os_version_mobile")
+                   }
+
+               }else{
+                   if (System.getProperty("Mobile_device_ios")) {
+                       systemProperty "Mobile_device_ios", System.getProperty("Mobile_device_ios")
+                   }
+               }
+           }
+       }
+
+
+       if(System.getProperty("isMaximized"))
+       {
+           systemProperty "isMaximized", System.getProperty("isMaximized")
+       }
+
+       if(System.getProperty("incognito"))
+        {
+            systemProperty "incognito", System.getProperty("incognito")
+        }
+        if(System.getProperty("headless"))
+        {
+            systemProperty "headless", System.getProperty("headless")
+        }
+        if(System.getProperty("IsRemote"))
+        {
+            systemProperty "IsRemote", System.getProperty("IsRemote")
+        }
+        if(System.getProperty("Browserstack_local"))
+        {
+            systemProperty "Browserstack_local", System.getProperty("Browserstack_local")
+        }
+
+    systemProperty "cucumber.filter.tags", System.getProperty("cucumber.filter.tags")
+
+    systemProperty "cucumber.options", System.getProperty("cucumber.options")
+
+    if(System.getProperty("BROWSERSTACK_LOCAL_IDENTIFIER"))
+    {
+        environment "BROWSERSTACK_LOCAL_IDENTIFIER", System.getProperty("BROWSERSTACK_LOCAL_IDENTIFIER")
+    }else{
+        environment "BROWSERSTACK_LOCAL_IDENTIFIER", System.getProperty("Suite")+"_"+System.getProperty("App")
+    }
+
+    //To get the Security Scan type use -DScan {passive,active,all,none}
+    if(System.getProperty("Scan")) {
+        systemProperty "Scan", System.getProperty("Scan")
+    }
+
+    if(System.getProperty("ScanLevel")) {
+        systemProperty "ScanLevel", System.getProperty("ScanLevel")
+    }
+
+
+    if(System.getProperty("HighRiskLimit")) {
+        systemProperty "HighRiskLimit", System.getProperty("ScHighRiskLimitan")
+    }
+
+    if(System.getProperty("MidRiskLimit")) {
+        systemProperty "MidRiskLimit", System.getProperty("MidRiskLimit")
+    }
+
+    if(System.getProperty("LowRiskLimit")) {
+        systemProperty "LowRiskLimit", System.getProperty("LowRiskLimit")
+    }
+
+    if(System.getProperty("TotalRiskLimit")) {
+        systemProperty "TotalRiskLimit", System.getProperty("TotalRiskLimit")
+    }
+    if(System.getProperty("utility_isNewCohort")) {
+        systemProperty "utility_isNewCohort", System.getProperty("utility_isNewCohort")
+    }
+    if(System.getProperty("utility_cohortId")) {
+        systemProperty "utility_cohortId", System.getProperty("utility_cohortId")
+    }
+    if(System.getProperty("utility_email")) {
+        systemProperty "utility_email", System.getProperty("utility_email")
+    }
+    if(System.getProperty("utility_role")) {
+        systemProperty "utility_role", System.getProperty("utility_role")
+    }
+    if(System.getProperty("utility_noOfStudents")) {
+        systemProperty "utility_noOfStudents", System.getProperty("utility_noOfStudents")
+    }
+
+
+        //To get the Suite name -DSuite = "The Suite name" {Web, Android}
+        filter{
+                //To get the App name -DApp = "The App name" {Marketing, Live, Learn}
+                if(System.getProperty("Suite") == "Web")
+                {
+                    String TestRunnerName = "TestRunner_Web_"+System.getProperty("App")
+
+                    includeTestsMatching TestRunnerName
+                }
+                else if(System.getProperty("Suite") == "mWeb"){
+                    String TestRunnerName = "TestRunner_mWeb_"+System.getProperty("App")
+                    systemProperty "TestRunner", TestRunnerName.toString()
+                    includeTestsMatching TestRunnerName
+                }
+                else if(System.getProperty("Suite") == "Native"){
+                    String TestRunnerName = "TestRunner_Native_"+System.getProperty("App")
+                    systemProperty "TestRunner", TestRunnerName.toString()
+                    includeTestsMatching TestRunnerName
+                }
+                else if(System.getProperty("Suite") == "API"){
+                    String TestRunnerName = "TestRunner_API_"+System.getProperty("App")
+                    systemProperty "TestRunner", TestRunnerName.toString()
+                    includeTestsMatching TestRunnerName
+                }
+          }
+}
+
+configurations {
+    testCompile
+    cucumberRuntime {
+        extendsFrom implementation
+    }
+}
+
+task cucumber() {
+    dependsOn assemble, compileTestJava
+    doLast {
+        javaexec {
+            main = "io.cucumber.core.cli.Main"
+            classpath = configurations.cucumberRuntime + sourceSets.main.output + sourceSets.test.output
+            args = [
+                    '--tags',   '@Web_LearnE2E',
+                    '--plugin', 'pretty',
+                    '--plugin', 'html:reports/testreport.html',
+                    '--plugin', 'io.qameta.allure.cucumber6jvm.AllureCucumber6Jvm',
+                    '--glue', 'ueducation/StepDefinitions/Web',
+                    'src/test/resources/FeatureFiles/Web']
+        }
+    }
+}
+
+task cucumberMobiles() {
+    dependsOn assemble, compileTestJava
+    doLast {
+        javaexec {
+            main = "io.cucumber.core.cli.Main"
+            classpath = configurations.cucumberRuntime + sourceSets.main.output + sourceSets.test.output
+            args = [
+
+                    '--plugin', 'pretty',
+                    '--plugin', 'html:reports/testreport.html',
+                    '--plugin', 'io.qameta.allure.cucumber6jvm.AllureCucumber6Jvm',
+                    '--glue', 'ueducation/StepDefinitions/Android',
+                    'src/test/resources/FeatureFiles/Android']
+        }
+    }
+}
+
+task learn() {
+    dependsOn assemble, compileTestJava
+    doLast {
+        javaexec {
+            main = "io.cucumber.core.cli.Main"
+            classpath = configurations.cucumberRuntime + sourceSets.main.output + sourceSets.test.output
+            args = [
+                    '--tags', '@Web_LearnE2E',
+                    '--plugin', 'pretty',
+                    '--plugin', 'html:reports/testreport.html',
+                    '--glue', 'ueducation.StepDefinitions',
+                    'src/test/resources']
+        }
+    }
+}
+
+
+task live1() {
+    dependsOn assemble, compileTestJava
+    doLast {
+        javaexec {
+            main = "io.cucumber.core.cli.Main"
+            classpath = configurations.cucumberRuntime + sourceSets.main.output + sourceSets.test.output
+            args = [
+                    '--tags', '@SGC_Session_Learner_Audio_Mic_check',
+                    '--plugin', 'pretty',
+                    '--plugin', 'html:reports/testreport.html',
+                    '--features', 'src/test/resources/FeatureFiles/Web/Live',
+                    '--glue', 'com/Upgrad/StepDefinitions/Web/Live',
+                    'src/test/resources']
+        }
+    }
+}
+
+task live2(dependsOn: live1){
+    dependsOn assemble, compileTestJava
+    doLast {
+        javaexec {
+            main = "io.cucumber.core.cli.Main"
+            classpath = configurations.cucumberRuntime + sourceSets.main.output + sourceSets.test.output
+            args = [
+                    '--tags', '@SGC_Session_NonLearner_Audio_Mic_check',
+                    '--plugin', 'pretty',
+                    '--plugin', 'html:reports/testreport.html',
+                    '--features', 'src/test/resources/FeatureFiles/Web/Live',
+                    '--glue', 'com/Upgrad/StepDefinitions/Web/Live',
+                    'src/test/resources']
+        }
+    }
+}
+
+
+cucumberReports {
+    outputDir = file('build/reports/CucumberSpecificReport')
+    buildId = '0'
+    reports = files('build/reports/CucumberSpecificReport/CucumberJson/cucumber.json')
+}
+
+/*task generateAllureReport(type: Exec) {
+    commandLine 'allure', 'generate' ,'-c'
+//    commandLine 'allure', 'open'
+}
+
+allure {
+    version = allurePluginVersion
+    autoconfigure = true
+}
+
+cucumber.finalizedBy 'generateAllureReport'*/

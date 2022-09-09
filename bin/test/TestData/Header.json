@@ -1,0 +1,58 @@
+{
+  "HeaderID": "Courses",
+  "ProgramList": [
+    {
+      "ProgramName": "MBA & DBA",
+      "ProgramCourses": [
+        {
+          "ProgramCourseCertification": "Doctor of Business Administration",
+          "ProgramCourseInstitutionName": "Swiss School of Business and Management"
+        },
+        {
+          "ProgramCourseCertification": "MBA (Global)",
+          "ProgramCourseInstitutionName":"Deakin Business School"
+        },
+        {
+          "ProgramCourseCertification": "MBA (Global) - Specialisations",
+          "ProgramCourseInstitutionName":"Liverpool Business School- LBS"
+        },
+        {
+          "ProgramCourseCertification": "Executive MBA",
+          "ProgramCourseInstitutionName":"Swiss School of Business and Management"
+        },
+        {
+          "ProgramCourseCertification": "Post Graduate Diploma in Management",
+          "ProgramCourseInstitutionName":"Birla Institute of Management Technology"
+        },
+        {
+          "ProgramCourseCertification": "MBA (Exec.) with Specialisation in Business Analytics",
+          "ProgramCourseInstitutionName":"NMIMS"
+        },
+        {
+          "ProgramCourseCertification": "MBA in Digital Finance and Banking",
+          "ProgramCourseInstitutionName":"Jindal Global Business School"
+        },
+        {
+          "ProgramCourseCertification": "MBA (Global) with specialisation in Digital Marketing",
+          "ProgramCourseInstitutionName":"Deakin Business School"
+        },
+        {
+          "ProgramCourseCertification": "MBA (Global)",
+          "ProgramCourseInstitutionName":"Deakin Business School"
+        },
+        {
+          "ProgramCourseCertification": "MBA with Specialization in Strategy & Leadership",
+          "ProgramCourseInstitutionName":"JAIN (Deemed-to-be University)"
+        },
+        {
+          "ProgramCourseCertification": "MBA with Specialization in Advertising & Branding",
+          "ProgramCourseInstitutionName":"JAIN (Deemed-to-be University)"
+        },
+        {
+          "ProgramCourseCertification": "Essex Online MBA",
+          "ProgramCourseInstitutionName":"University of Essex Online"
+        }
+      ]
+    }
+  ]
+}
