@@ -60,4 +60,5 @@ public class SeoAutomationSteps {
     public void opens_page_source_of(String Page, String noIndex, String noFollow) throws Exception {
         SEOAutomation.openPageSource_noIndex_nofollow(Page, noIndex, noFollow);
     }
+
 }

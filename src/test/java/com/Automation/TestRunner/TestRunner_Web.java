@@ -16,7 +16,7 @@ import org.junit.runner.RunWith;
         features = {"src/test/resources/Feature/Web"},
 
         glue = {"com/Automation/StepDefinitions/Web"},
-        tags = "@SEOAutomation_Google_1"
+        tags = "@locationchoice"
 
 )
 public class TestRunner_Web {

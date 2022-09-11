@@ -40,7 +40,9 @@ dependencies {
     implementation group: 'net.masterthought', name: 'cucumber-reporting', version: '5.6.1'
     implementation group: 'com.google.code.gson', name: 'gson', version: '2.3.1'
     implementation 'com.github.javafaker:javafaker:1.0.2'
-    compileOnly group: 'org.projectlombok', name: 'lombok', version: '0.11.0'
+    // https://mvnrepository.com/artifact/org.projectlombok/lombok
+    testCompileOnly 'org.projectlombok:lombok:1.18.12'
+    testAnnotationProcessor 'org.projectlombok:lombok:1.18.12'
     // https://mvnrepository.com/artifact/com.microsoft.edge/msedge-selenium-tools-java
     implementation group: 'com.microsoft.edge', name: 'msedge-selenium-tools-java', version: '3.141.0'
     // https://mvnrepository.com/artifact/com.browserstack/browserstack-local-java
@@ -228,48 +230,6 @@ test {
     }else{
         environment "BROWSERSTACK_LOCAL_IDENTIFIER", System.getProperty("Suite")+"_"+System.getProperty("App")
     }
-
-    //To get the Security Scan type use -DScan {passive,active,all,none}
-    if(System.getProperty("Scan")) {
-        systemProperty "Scan", System.getProperty("Scan")
-    }
-
-    if(System.getProperty("ScanLevel")) {
-        systemProperty "ScanLevel", System.getProperty("ScanLevel")
-    }
-
-
-    if(System.getProperty("HighRiskLimit")) {
-        systemProperty "HighRiskLimit", System.getProperty("ScHighRiskLimitan")
-    }
-
-    if(System.getProperty("MidRiskLimit")) {
-        systemProperty "MidRiskLimit", System.getProperty("MidRiskLimit")
-    }
-
-    if(System.getProperty("LowRiskLimit")) {
-        systemProperty "LowRiskLimit", System.getProperty("LowRiskLimit")
-    }
-
-    if(System.getProperty("TotalRiskLimit")) {
-        systemProperty "TotalRiskLimit", System.getProperty("TotalRiskLimit")
-    }
-    if(System.getProperty("utility_isNewCohort")) {
-        systemProperty "utility_isNewCohort", System.getProperty("utility_isNewCohort")
-    }
-    if(System.getProperty("utility_cohortId")) {
-        systemProperty "utility_cohortId", System.getProperty("utility_cohortId")
-    }
-    if(System.getProperty("utility_email")) {
-        systemProperty "utility_email", System.getProperty("utility_email")
-    }
-    if(System.getProperty("utility_role")) {
-        systemProperty "utility_role", System.getProperty("utility_role")
-    }
-    if(System.getProperty("utility_noOfStudents")) {
-        systemProperty "utility_noOfStudents", System.getProperty("utility_noOfStudents")
-    }
-
 
         //To get the Suite name -DSuite = "The Suite name" {Web, Android}
         filter{

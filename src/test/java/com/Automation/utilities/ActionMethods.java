@@ -35,6 +35,14 @@ public class ActionMethods {
     public static WebDriverWait wait;
     public static Actions actions;
 
+
+    public static BiFunction<String, String, By> textLocatorCreator = new BiFunction<String, String, By>() {
+        @Override
+        public By apply(String s, String s2) {
+            return By.xpath(String.format(s,s2));
+        }
+    };
+
     public Date getDate(String date) {
         try {
             SimpleDateFormat formatter = new SimpleDateFormat("dd-MMM-yyyy");
