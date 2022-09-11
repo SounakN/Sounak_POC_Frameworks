@@ -33,7 +33,7 @@ import java.util.function.Function;
 public class ActionMethods {
 
     public static WebDriverWait wait;
-    public static Actions actions;
+    public static Actions actions ;
 
 
     public static BiFunction<String, String, By> textLocatorCreator = new BiFunction<String, String, By>() {
@@ -695,7 +695,7 @@ public class ActionMethods {
 
     //Move To an Element
     //Param(true for clicking, False for not clicking), Webdriver, WebElement
-    public void MoveTo(WebDriver driver, boolean check, WebElement elem) {
+    public static void MoveTo(WebDriver driver, boolean check, WebElement elem) {
         actions = new Actions(driver);
         if (check) {
             actions.moveToElement(elem).click().perform();

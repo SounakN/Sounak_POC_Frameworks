@@ -16,10 +16,11 @@ import java.util.List;
 public class homepageActions {
     private WebDriver driver;
 
+    private WebElement choiceHeader = null;
+
     //Page wise Constants
     private static final String defaultLocation = "Select City";
     private static final String defaultPlaceHolderChooseCity = "Search your city or pincode";
-
     //String locators
     private String selectCity_String = "//span[text()='%s']";
     private String placeHolderChooseCity = "//input[@placeholder='%s']";
@@ -84,16 +85,34 @@ public class homepageActions {
     public Boolean chooseHeader(String headerChoice){
         try{
             List<WebElement> headerChoices = ActionMethods.FindElements( navigationHeaders,driver,30,5);
-            WebElement choice = headerChoices.stream().filter(x-> ActionMethods.FindElement(By.xpath("./a"),x,driver,20,5).getAttribute("title")
+            choiceHeader = headerChoices.stream().filter(x-> ActionMethods.FindElement(By.xpath("./a"),x,driver,20,5).getAttribute("title")
                     .equals(headerChoice)).findFirst().get();
 
-            ActionMethods.actions.moveToElement(choice);
+            Assert.assertNotNull(choiceHeader);
+            ActionMethods.MoveTo(driver,false,choiceHeader);
             ActionMethods.EmbedText(SetUp.Sc,"Found the Header and hovered on it");
 
-
-
+            return true;
         }catch(Exception e){
-
+            e.printStackTrace();
+            return false;
         }
     }
+
+    public boolean sellPhone(String type, String gadgetCompany){
+        try{
+            ActionMethods.turnOffImplicitWaits(driver);
+            String dynamicLoc = ".//div[text()='"+type+"']/following-sibling::div[1]//a/div[text()='"+gadgetCompany+"']";
+            WebElement gadget = ActionMethods.FindElement(By.xpath(dynamicLoc),choiceHeader,
+                    driver,10,1);
+            Assert.assertNotNull(gadget);
+            gadget.click();
+            return true;
+        }catch(Exception e){
+            e.printStackTrace();
+            return false;
+        }
+
+    }
+
 }
