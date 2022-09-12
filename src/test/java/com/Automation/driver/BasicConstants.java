@@ -41,4 +41,9 @@ public class BasicConstants {
 	public static String Mobile_device_ios = (System.getProperty("Mobile_device_ios")!=null)?System.getProperty("Mobile_device_ios"):EnvUtil.getProperties().getProperty("Mobile_device_ios");
 	public static String Browser_mobile_ios = (System.getProperty("Browser_mobile_ios")!=null)?System.getProperty("Browser_mobile_ios"):EnvUtil.getProperties().getProperty("Browser_mobile_ios");
 
+	//Buttons
+	public static final String GETEXACTVALUE = "Get Exact Value";
+	public static final String GOTIT = "Got It";
+	public static final String CONTINUE = "Continue";
+
 }

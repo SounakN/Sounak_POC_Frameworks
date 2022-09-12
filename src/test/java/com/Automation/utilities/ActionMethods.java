@@ -92,6 +92,7 @@ public class ActionMethods {
         }
     }
 
+
     public static Boolean syncClickable(WebDriver driver, WebElement element) {
         try {
             FluentWait<WebDriver> wait = (WebDriverWait) new WebDriverWait(driver, 100).ignoring(StaleElementReferenceException.class);
@@ -226,15 +227,11 @@ public class ActionMethods {
 
     }
 
-    public Boolean ScrollIntoView(WebDriver driver, WebElement Element) {
+    public static Boolean ScrollIntoView(WebDriver driver, WebElement Element) {
         try {
             JavascriptExecutor js = (JavascriptExecutor) driver;
             js.executeScript("arguments[0].scrollIntoView(true);", Element);
-            if (Element.isDisplayed()) {
-                return true;
-            } else {
-                return false;
-            }
+            return true;
         } catch (Exception e) {
             return false;
         }
@@ -306,6 +303,10 @@ public class ActionMethods {
         WebElement Dropwdown_Elem = FindElement(Dropdown, driver, 5, 1);
         Select dropDown = new Select(Dropwdown_Elem);
         dropDown.deselectByValue(Value);
+    }
+    public static void pageLoadCompleteByJavaScript(WebDriver driver){
+        wait = new WebDriverWait(driver, 30);
+        wait.until((ExpectedCondition<Boolean>) wd -> ((JavascriptExecutor) wd).executeScript("return document.readyState").equals("complete"));
     }
 
     //Scroll Down by certain given Pixel

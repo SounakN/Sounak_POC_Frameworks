@@ -1,39 +1,57 @@
 package com.Automation.Pages.Web;
 
 import com.Automation.StepDefinitions.Web.SetUp;
+import com.Automation.driver.BasicConstants;
 import com.Automation.driver.WebBrowser;
 import com.Automation.utilities.ActionMethods;
 import com.Automation.utilities.EnvUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.Assert;
 import org.openqa.selenium.By;
+import org.openqa.selenium.ElementNotInteractableException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 
-import java.util.List;
+import java.util.*;
+
+import static java.lang.Thread.sleep;
 
 
 @Slf4j
 public class sellPhoneActions {
     private WebDriver driver;
-
+    private commonActions commonActions = new commonActions();
     //Page wise Constants
     private static final String headerForPage = "Select City";
 
     //String locators
-    private String headerPageDescription = "//h1[contains(text(),'%s')]";
-
+    private String headerPageDescription_h1 = "//h1[contains(text(),'%s')]";
+    private String headerPageDescription_h2 = "//h2[contains(text(),'%s')]";
     //Locators
     By textInputSearchModel = By.xpath("//input[@placeholder='Search model']");
     By searchList = By.xpath("//ul[contains(@id,'list_search')]//li");
     By variantCounts = By.xpath("//span[contains(text(),'GB')]");
+    By questionList = By.xpath("//section[contains(@class,'mar-b20')]");
+    By phoneOptionBoxes = By.xpath("//div[@class='layout horizontal wrap flwidth']/section/div[1]");
+
 
     public sellPhoneActions() {
         driver= WebBrowser.getDriver();
     }
-    public boolean presenceOfHeader(String header){
+    public boolean presenceOfHeader_h1(String header){
         try{
-            WebElement headerElem = ActionMethods.FindElement(ActionMethods.textLocatorCreator.apply(headerPageDescription,header),driver,30,5);
+            WebElement headerElem = ActionMethods.FindElement(ActionMethods.textLocatorCreator.apply(headerPageDescription_h1,header),driver,30,5);
+            Assert.assertNotNull(headerElem);
+            ActionMethods.embedScreenshot(driver, SetUp.Sc,"Found the header");
+            return headerElem.isDisplayed();
+        }catch(Exception e){
+            e.printStackTrace();
+            return false;
+        }
+    }
+    public boolean presenceOfHeader_h2(String header){
+        try{
+            WebElement headerElem = ActionMethods.FindElement(ActionMethods.textLocatorCreator.apply(headerPageDescription_h2,header),driver,30,5);
             Assert.assertNotNull(headerElem);
             ActionMethods.embedScreenshot(driver, SetUp.Sc,"Found the header");
             return headerElem.isDisplayed();
@@ -53,7 +71,7 @@ public class sellPhoneActions {
             Integer count =0;
             while(listOfSearches.size()==0){
                 count++;
-                Thread.sleep(3000);
+                sleep(3000);
                 listOfSearches = ActionMethods.FindElements(searchList,driver,30,5);
 
                 if(count>5){
@@ -100,5 +118,60 @@ public class sellPhoneActions {
             return false;
         }
 
+    }
+    public boolean buttonClicks(String buttonName,boolean check){
+        try{
+            Assert.assertTrue(commonActions.clickOnButton(buttonName,check));
+            ActionMethods.EmbedText(SetUp.Sc,"Clicked on the Button :: "+buttonName);
+            return true;
+        }catch(Exception e){
+            e.printStackTrace();
+            return false;
+        }
+    }
+    public boolean questionAndAnswers(String question, String answer){
+        try{
+            List<WebElement> questionsParent = ActionMethods.FindElements(questionList,driver,20,5);
+
+            WebElement choiceOfQuestion = questionsParent.stream().filter(x->
+                 ActionMethods.FindElement(By.xpath("./div[1]"),x,driver,20,1).getText().equals(question)).findFirst().get();
+            WebElement choiceOfAnswers = choiceOfQuestion.findElement(By.xpath("./div[2]//input[@value='"+answer+"']"));
+            try{
+                choiceOfAnswers.click();
+            }catch(ElementNotInteractableException e){
+                ActionMethods.ScrollIntoView(driver, choiceOfAnswers);
+                ActionMethods.JavaScriptClick(driver,choiceOfAnswers);
+            }
+            return true;
+        }catch(Exception e){
+            e.printStackTrace();
+            return false;
+        }
+    }
+    public boolean chooseAvailableAccessories(String header){
+        try{
+            WebElement headerH2 = ActionMethods.FindElement(By.xpath("//h2"),driver,30,2);
+            Assert.assertTrue(headerH2.getText().equals(header));
+            if(header.equals("What is your mobile age?")){
+                ActionMethods.FindElement(By.xpath("//input[@type='radio']"),driver,20,5).click();
+            }else{
+                List<WebElement> dynamicBoxes = ActionMethods.FindElements(phoneOptionBoxes,driver,10,2);
+                dynamicBoxes.stream().forEach(x->{
+                    try{
+                        x.click();
+                    }catch(ElementNotInteractableException e){
+                        ActionMethods.ScrollIntoView(driver, x);
+                        x.click();
+                    }
+                });
+                Assert.assertTrue(buttonClicks(BasicConstants.CONTINUE,true));
+            }
+
+
+            return true;
+        }catch(Exception e){
+            e.printStackTrace();
+            return false;
+        }
     }
 }
