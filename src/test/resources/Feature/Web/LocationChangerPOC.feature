@@ -13,7 +13,7 @@ Feature: User can choose Location
       | Delhi     |
 
   @SellPhone
-  Scenario Outline: User chooses location from given choice
+  Scenario Outline: User Sells a phone
     Given User launches the "URL" and verifies landing on homePage
     Then User can change the Location to "<location>"
     And User chooses "Sell Phone" from navigation Header
@@ -31,6 +31,29 @@ Feature: User can choose Location
       | 5. Do you have valid bill with same IMEI?          | Yes     |
     Then User checks all those available options for the Phone
     Examples:
-      | location | Type       | Phone   | Model                      | Variant     | Header                        | HeaderInside                        | HeaderAfterSelection                              |
-      | Kolkata  | Top Brands | Apple   | Apple iPhone 7             | 128 GB      | Sell Old Apple Mobile Phone   | Sell Old Apple iPhone 7             | Sell Old Apple iPhone 7 (2 GB/128 GB)             |
+      | location | Type       | Phone | Model          | Variant | Header                      | HeaderInside            | HeaderAfterSelection                  |
+      | Kolkata  | Top Brands | Apple | Apple iPhone 7 | 128 GB  | Sell Old Apple Mobile Phone | Sell Old Apple iPhone 7 | Sell Old Apple iPhone 7 (2 GB/128 GB) |
       #| Kolkata  | Top Brands | Samsung | Samsung Galaxy S22 Plus 5G | 8 GB/256 GB | Sell Old Samsung Mobile Phone | Sell Old Samsung Galaxy S22 Plus 5G | Sell Old Samsung Galaxy S22 Plus 5G (8 GB/256 GB) |
+
+  @BuyPhone
+  Scenario Outline: User Buys a phone
+    Given User launches the "URL" and verifies landing on homePage
+    Then User can change the Location to "<location>"
+    And User chooses "Buy Phone" from navigation Header
+      | Type   | Phone   |
+      | <Type> | <Phone> |
+    Then User Selects the Phone from the available list
+      | Model   |
+      | <Model> |
+    Then User provides the Contact Information
+      | Email                | First name | Last name | Address    | City    | State | PIN code | Phone      |
+      | sounak@codevyasa.com | SS         | NN        | HaridasPur | Kolkata | WB    | 700000   | 9999999999 |
+    And Validates the information present on screen
+      | Email                |  Address    | City    | State | PIN code |
+      | sounak@codevyasa.com |  HaridasPur | Kolkata | WB    | 700000   |
+
+
+    Examples:
+      | location | Type       | Phone | Model                        | Variant | Header                      | HeaderInside            | HeaderAfterSelection                  |
+      | Kolkata  | Top Brands | Apple | Apple iPhone X - Refurbished | 128 GB  | Sell Old Apple Mobile Phone | Sell Old Apple iPhone 7 | Sell Old Apple iPhone 7 (2 GB/128 GB) |
+

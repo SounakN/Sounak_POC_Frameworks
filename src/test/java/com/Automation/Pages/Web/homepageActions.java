@@ -10,7 +10,9 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @Slf4j
 public class homepageActions {
@@ -107,6 +109,29 @@ public class homepageActions {
                     driver,10,1);
             Assert.assertNotNull(gadget);
             gadget.click();
+            return true;
+        }catch(Exception e){
+            e.printStackTrace();
+            return false;
+        }
+
+    }
+
+    public boolean buyPhone(String type, String gadgetCompany){
+        try{
+            String currentHandle = driver.getWindowHandle();
+            ActionMethods.turnOffImplicitWaits(driver);
+            String dynamicLoc = ".//div[text()='"+type+"']/following-sibling::div[1]//a/div[text()='"+gadgetCompany+"']";
+            WebElement gadget = ActionMethods.FindElement(By.xpath(dynamicLoc),choiceHeader,
+                    driver,10,1);
+            Assert.assertNotNull(gadget);
+            gadget.click();
+
+            Set<String>  windowHandles = new HashSet<>();
+            while(windowHandles.size()<2){
+                windowHandles = driver.getWindowHandles();;
+            }
+            driver.switchTo().window(windowHandles.stream().filter(x-> !x.equalsIgnoreCase(currentHandle)).findFirst().get());
             return true;
         }catch(Exception e){
             e.printStackTrace();

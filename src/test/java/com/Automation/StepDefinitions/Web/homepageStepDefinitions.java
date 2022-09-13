@@ -50,6 +50,10 @@ public class homepageStepDefinitions {
                 case "Sell Phone":
                     Assert.assertTrue(homepageActions.sellPhone(tableRows.get(0).get("Type"), tableRows.get(0).get("Phone")));
                     break;
+                case "Buy Phone":
+                    Assert.assertTrue(homepageActions.buyPhone(tableRows.get(0).get("Type"), tableRows.get(0).get("Phone")));
+                    break;
+
             }
 
 
@@ -57,5 +61,6 @@ public class homepageStepDefinitions {
 
         }
     }
+
 
 }

@@ -263,7 +263,8 @@ public class ActionMethods {
 
     //Click on the Dropdown button and then Select the choice based on value
     //WebDriver, WebElement of the Dropdown, Select class locator, Text to chose from
-    public void selectElementFromDropDownbyValue(WebDriver driver, WebElement element, By Dropdown, String value) {
+    public static void selectElementFromDropDownbyValue(WebDriver driver, WebElement element, By Dropdown, String value) {
+       wait = new WebDriverWait(driver, 30);
         wait.until(ExpectedConditions.elementToBeClickable(element));
         element.click();
         wait.until(ExpectedConditions.presenceOfElementLocated(Dropdown));
@@ -271,10 +272,19 @@ public class ActionMethods {
         Select dropDown = new Select(Dropwdown_Elem);
         dropDown.selectByValue(value);
     }
+    public static void selectElementFromDropDownbyValue(WebDriver driver, By Dropdown, String value) {
+        wait = new WebDriverWait(driver, 30);
+        wait.until(ExpectedConditions.presenceOfElementLocated(Dropdown));
+        WebElement Dropwdown_Elem = FindElement(Dropdown, driver, 5, 1);
+        Dropwdown_Elem.click();
+        Select dropDown = new Select(Dropwdown_Elem);
+        dropDown.selectByValue(value);
+    }
 
     //Click on the Dropdown button and then De-Select the choice based on Text
     //WebDriver, WebElement of the Dropdown, Select class locator, Text to chose from
     public void DeselectElementFromDropDownbyVisibleText(WebDriver driver, WebElement element, By Dropdown, String text) {
+        wait = new WebDriverWait(driver, 30);
         wait.until(ExpectedConditions.elementToBeClickable(element));
         element.click();
         wait.until(ExpectedConditions.presenceOfElementLocated(Dropdown));
