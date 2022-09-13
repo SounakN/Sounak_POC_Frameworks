@@ -22,6 +22,10 @@ public class buyPhoneActions {
     By checkOut = By.xpath("//button[text()='Checkout']");
     By continueToShipping = By.xpath("//button/span[text()='Continue to shipping']");
     By tableRows = By.xpath("//div[@role='table']/div[@role='row']");
+    By continueToPayments = By.xpath("//button/span[text()='Continue to payment']");
+    By totalFinalCostCalculation = By.xpath("//td[@class='total-line__price']/span");
+    By finalCostCalculation = By.xpath("//td[@class='total-line__price payment-due']/span[2]");
+
     private String phonePrice;
 
     public buyPhoneActions() {
@@ -102,10 +106,53 @@ public class buyPhoneActions {
                 if(rowHeader.equals("Contact")){
                     String rowValue = ActionMethods.FindElement(By.xpath("./div[1]/div[@role='cell']/bdo"),x,driver,20,4).getText().trim();
                     Assert.assertTrue(rowValue.equals(tableValues.get(0).get("Email")));
+                    ActionMethods.EmbedText(SetUp.Sc,"Asserted Email, from UI ::"+rowValue+
+                            " and from data :: "+tableValues.get(0).get("Email"));
                 }else{
-
+                    String rowValue = ActionMethods.FindElement(By.xpath("./div[1]/div[@role='cell']/address"),x,driver,20,4).getText().trim();
+                    String address = (tableValues.get(0).get("Address"))+", "+(tableValues.get(0).get("PIN code"))+
+                            " "+(tableValues.get(0).get("City"))+" "+(tableValues.get(0).get("State"))+
+                            ", India";
+                    Assert.assertTrue(rowValue.equals(address));
+                    ActionMethods.EmbedText(SetUp.Sc,"Asserted Address, from UI ::"+rowValue+
+                            " and from data :: "+address);
                 }
             });
+
+            ActionMethods.JavaScriptClick(driver,ActionMethods.FindElement(continueToPayments,driver,20,4));
+            ActionMethods.EmbedText(SetUp.Sc,"Clicked on Continue To Payments");
+            return true;
+        }catch(Exception e){
+            e.printStackTrace();
+            return false;
+        }
+    }
+
+    public boolean validateFinalPrice() {
+        try{
+            List<WebElement> finalCosts= ActionMethods.FindElements(totalFinalCostCalculation,driver,20,5);
+
+            String checkoutPrice = finalCosts.get(0).getAttribute("data-checkout-subtotal-price-target");
+            int checkoutPriceInt = 0;
+            if(checkoutPrice.charAt(checkoutPrice.length()-1)=='0' && checkoutPrice.charAt(checkoutPrice.length()-2)=='0'){
+                checkoutPriceInt = Integer.parseInt(checkoutPrice)/100;
+            }
+            String shippingPrice = finalCosts.get(1).getAttribute("data-checkout-total-shipping-target");
+            int shippingPriceInt=0;
+            if(shippingPrice.equals("0")){
+                shippingPriceInt=0;
+            }
+
+            String finalPrice = ActionMethods.FindElement(finalCostCalculation,driver,20,4)
+                    .getAttribute("data-checkout-payment-due-target");
+            int finalPriceInt=0;
+            if(finalPrice.charAt(finalPrice.length()-1)=='0' && finalPrice.charAt(finalPrice.length()-2)=='0'){
+                finalPriceInt = Integer.parseInt(finalPrice)/100;
+            }
+
+            //Final Validation
+            Assert.assertTrue(finalPriceInt == (checkoutPriceInt+shippingPriceInt));
+
             return true;
         }catch(Exception e){
             e.printStackTrace();

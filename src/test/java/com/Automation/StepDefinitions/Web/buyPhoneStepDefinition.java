@@ -47,6 +47,7 @@ public class buyPhoneStepDefinition {
             List<Map<String, String>> tableRows = table.asMaps();
 
             Assert.assertTrue(buyPhoneAction.shippingInformationVerification(tableRows));
+            Assert.assertTrue(buyPhoneAction.validateFinalPrice());
 
         }catch(Exception e){
 
