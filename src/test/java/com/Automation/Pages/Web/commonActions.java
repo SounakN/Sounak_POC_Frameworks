@@ -12,13 +12,13 @@ import java.util.List;
 public class commonActions {
     private WebDriver driver;
 
-    By buttonMuiButtonParents = By.xpath("//*[@class='MuiButton-label']");
+    By buttonMuiButtonParents = By.xpath("//*[contains(@class,'MuiButton-label')]");
     By buttonMuiButtonParentsGOTIT = By.xpath("//*[@class='MuiButton-label' and text()='"+BasicConstants.GOTIT+"']");
     public commonActions() {
         this.driver = WebBrowser.getDriver();
     }
 
-    public boolean clickOnButton(String buttonName, boolean clickType){
+    public  boolean clickOnButton(String buttonName, boolean clickType){
         try{
             WebElement button = null;
             if(buttonName.equals(BasicConstants.GOTIT)){
@@ -46,6 +46,7 @@ public class commonActions {
                         button.click();
                     }
                 }else{
+                    ActionMethods.ScrollIntoView(driver, button);
                     ActionMethods.JavaScriptClick(driver,button);
                 }
 

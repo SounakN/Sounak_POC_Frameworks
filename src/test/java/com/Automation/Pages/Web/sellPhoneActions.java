@@ -7,10 +7,7 @@ import com.Automation.utilities.ActionMethods;
 import com.Automation.utilities.EnvUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.Assert;
-import org.openqa.selenium.By;
-import org.openqa.selenium.ElementNotInteractableException;
-import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebElement;
+import org.openqa.selenium.*;
 
 import java.util.*;
 
@@ -33,8 +30,12 @@ public class sellPhoneActions {
     By variantCounts = By.xpath("//span[contains(text(),'GB')]");
     By questionList = By.xpath("//section[contains(@class,'mar-b20')]");
     By phoneOptionBoxes = By.xpath("//div[@class='layout horizontal wrap flwidth']/section/div[1]");
-
-
+    By radioButtonForSavedAddress = By.xpath("(//div[text()='Other'])[3]/ancestor::span/preceding-sibling::div//input");
+    By availableDate = By.xpath("//div[text()='Please select your preferable pickup date']/following-sibling::div[1]/div");
+    By slots = By.xpath("//div[text()='Your availability on that day']/following-sibling::div[1]/div");
+    By sellNowButton = By.xpath("(//span[text()='Sell Now']/ancestor::button)[1]");
+    //Payment SLots
+    By Upi = By.xpath("//div[text()='Select your payment mode']/following-sibling::div[2]//input");
     public sellPhoneActions() {
         driver= WebBrowser.getDriver();
     }
@@ -82,7 +83,7 @@ public class sellPhoneActions {
                 }
             }
             WebElement variantChoices = listOfSearches.stream().filter(x-> x.getText().equals(modelName)).findFirst().get();
-            variantChoices.click();
+            ActionMethods.JavaScriptClick(driver,variantChoices);
             ActionMethods.EmbedText(SetUp.Sc,"Choose the right model from the suggestive dropdown :: "+modelName);
             return true;
         }catch(Exception e){
@@ -129,6 +130,16 @@ public class sellPhoneActions {
             return false;
         }
     }
+    public boolean sellNowButtonClick(){
+        try{
+            ActionMethods.JavaScriptClick(driver, ActionMethods.FindElement(sellNowButton,driver,20,5));
+            ActionMethods.EmbedText(SetUp.Sc,"Clicked on the Button :: Sell Now");
+            return true;
+        }catch(Exception e){
+            e.printStackTrace();
+            return false;
+        }
+    }
     public boolean questionAndAnswers(String question, String answer){
         try{
             List<WebElement> questionsParent = ActionMethods.FindElements(questionList,driver,20,5);
@@ -142,6 +153,7 @@ public class sellPhoneActions {
                 ActionMethods.ScrollIntoView(driver, choiceOfAnswers);
                 ActionMethods.JavaScriptClick(driver,choiceOfAnswers);
             }
+            ActionMethods.EmbedText(SetUp.Sc,"Answered all questions");
             return true;
         }catch(Exception e){
             e.printStackTrace();
@@ -156,17 +168,62 @@ public class sellPhoneActions {
                 ActionMethods.FindElement(By.xpath("//input[@type='radio']"),driver,20,5).click();
             }else{
                 List<WebElement> dynamicBoxes = ActionMethods.FindElements(phoneOptionBoxes,driver,10,2);
-                dynamicBoxes.stream().forEach(x->{
+                /*dynamicBoxes.stream().forEach(x->{
                     try{
                         x.click();
                     }catch(ElementNotInteractableException e){
-                        ActionMethods.ScrollIntoView(driver, x);
-                        x.click();
+                        ActionMethods.ScrollIntoView(driver,x);
+                       ActionMethods.JavaScriptClick(driver,x);
                     }
-                });
-                Assert.assertTrue(buttonClicks(BasicConstants.CONTINUE,true));
+                });*/
+                ActionMethods.ScrollIntoView(driver,dynamicBoxes.get(0));
+                ActionMethods.JavaScriptClick(driver,dynamicBoxes.get(0));
+
+                Assert.assertTrue(buttonClicks(BasicConstants.CONTINUE,false));
+
+                ActionMethods.EmbedText(SetUp.Sc,"Answered all queries from :: "+header);
             }
 
+
+            return true;
+        }catch(Exception e){
+            e.printStackTrace();
+            return false;
+        }
+    }
+    public boolean pickUpInformation(String day, String slot,String paymentType){
+        try{
+            WebElement radiobutton = ActionMethods.FindElement(radioButtonForSavedAddress,driver,20,5);
+            assert radiobutton != null;
+            String checked = radiobutton.getAttribute("checked");
+            if(checked == null){
+                ActionMethods.MoveTo(driver,true,radiobutton);
+            }
+            buttonClicks("Continue",false);
+            ActionMethods.EmbedText(SetUp.Sc,"Selected Address");
+
+            List<WebElement> availableDates = ActionMethods.FindElements(availableDate,driver,20,5);
+            ActionMethods.JavaScriptClick(driver, availableDates.get(Integer.parseInt(day)));
+            //ActionMethods.EmbedText(SetUp.Sc,"Selected Date :: "+availableDates.get(Integer.parseInt(day)).getText());
+
+            List<WebElement> availableSlots = ActionMethods.FindElements(slots,driver,20,5);
+            ActionMethods.JavaScriptClick(driver, availableSlots.get(Integer.parseInt(slot)));
+            //ActionMethods.EmbedText(SetUp.Sc,"Selected Date :: "+availableSlots.get(Integer.parseInt(slot)).getText());
+
+            buttonClicks("Continue",false);
+
+            //Payments
+            switch(paymentType){
+                case "Upi":
+                   WebElement UPI =  ActionMethods.FindElement(Upi,driver, 20,5);
+                   Assert.assertNotNull(UPI);
+                   ActionMethods.JavaScriptClick(driver,UPI);
+                break;
+
+            }
+            ActionMethods.EmbedText(SetUp.Sc,"Payments made with :: "+paymentType);
+            buttonClicks("Confirm Order",false);
+            ActionMethods.embedScreenshot(driver,SetUp.Sc,"");
 
             return true;
         }catch(Exception e){

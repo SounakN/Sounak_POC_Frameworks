@@ -374,17 +374,18 @@ public class ActionMethods {
 
     //Select a checkbox
     //Param WebElement
-    public void Checkbox_Select(WebElement element) {
+    public static boolean Checkbox_Select(WebDriver driver,WebElement element) {
         try {
-            wait.until(ExpectedConditions.elementToBeClickable(element));
             if (element.isSelected()) {
 
             } else {
-                element.click();
+                MoveTo(driver,true, element);
                 Thread.sleep(2000);
             }
+            return true;
         } catch (Exception e) {
             e.printStackTrace();
+            return false;
         }
     }
 

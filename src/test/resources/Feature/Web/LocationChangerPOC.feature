@@ -16,6 +16,7 @@ Feature: User can choose Location
   Scenario Outline: User Sells a phone
     Given User launches the "URL" and verifies landing on homePage
     Then User can change the Location to "<location>"
+    And User logs in with the Number "PhoneNumber" and OTP "Test_OTP"
     And User chooses "Sell Phone" from navigation Header
       | Type   | Phone   |
       | <Type> | <Phone> |
@@ -30,9 +31,12 @@ Feature: User can choose Location
       | 4. Is your device under brand warranty?            | No      |
       | 5. Do you have valid bill with same IMEI?          | Yes     |
     Then User checks all those available options for the Phone
+    Then User provides the Contact Information for selling
+    |days|slots|paymentMethod|
+    |1   |0    |Upi          |
     Examples:
-      | location | Type       | Phone | Model          | Variant | Header                      | HeaderInside            | HeaderAfterSelection                  |
-      | Kolkata  | Top Brands | Apple | Apple iPhone 7 | 128 GB  | Sell Old Apple Mobile Phone | Sell Old Apple iPhone 7 | Sell Old Apple iPhone 7 (2 GB/128 GB) |
+      | location | Type       | Phone   | Model                      | Variant     | Header                        | HeaderInside                        | HeaderAfterSelection                              |
+      | Kolkata  | Top Brands | Apple   | Apple iPhone 7             | 128 GB      | Sell Old Apple Mobile Phone   | Sell Old Apple iPhone 7             | Sell Old Apple iPhone 7 (2 GB/128 GB)             |
       #| Kolkata  | Top Brands | Samsung | Samsung Galaxy S22 Plus 5G | 8 GB/256 GB | Sell Old Samsung Mobile Phone | Sell Old Samsung Galaxy S22 Plus 5G | Sell Old Samsung Galaxy S22 Plus 5G (8 GB/256 GB) |
 
   @BuyPhone
@@ -49,11 +53,13 @@ Feature: User can choose Location
       | Email                | First name | Last name | Address    | City    | State | PIN code | Phone      |
       | sounak@codevyasa.com | SS         | NN        | HaridasPur | Kolkata | WB    | 700000   | 9999999999 |
     And Validates the information present on screen
-      | Email                |  Address    | City    | State | PIN code |
-      | sounak@codevyasa.com |  HaridasPur | Kolkata | WB    | 700000   |
+      | Email                | Address    | City    | State | PIN code |
+      | sounak@codevyasa.com | HaridasPur | Kolkata | WB    | 700000   |
 
 
     Examples:
-      | location | Type       | Phone | Model                        | Variant | Header                      | HeaderInside            | HeaderAfterSelection                  |
-      | Kolkata  | Top Brands | Apple | Apple iPhone X - Refurbished | 128 GB  | Sell Old Apple Mobile Phone | Sell Old Apple iPhone 7 | Sell Old Apple iPhone 7 (2 GB/128 GB) |
+      | location | Type       | Phone   | Model                            |
+      | Kolkata  | Top Brands | Apple   | Apple iPhone X - Refurbished     |
+      | Kolkata  | Top Brands | Samsung | Samsung Galaxy A12 - Refurbished |
+
 

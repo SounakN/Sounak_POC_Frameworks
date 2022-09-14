@@ -56,11 +56,18 @@ public class homepageStepDefinitions {
 
             }
 
-
         } catch (Exception e) {
 
         }
     }
 
 
+    @And("User logs in with the Number {string} and OTP {string}")
+    public void userLogsInWithTheNumberAndOTP(String phoneNumber, String OTP) {
+        try{
+            Assert.assertTrue(homepageActions.login(phoneNumber,OTP));
+        }catch(Exception e){
+
+        }
+    }
 }
