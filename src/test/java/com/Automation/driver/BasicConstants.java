@@ -45,5 +45,10 @@ public class BasicConstants {
 	public static final String GETEXACTVALUE = "Get Exact Value";
 	public static final String GOTIT = "Got It";
 	public static final String CONTINUE = "Continue";
+	public static final String ORDERDETAILS = "Order Details";
+	public static final String CONFIRM = "CONFIRM";
+	public static final String YES = "YES";
+
+
 
 }

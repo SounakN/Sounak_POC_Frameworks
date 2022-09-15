@@ -1,6 +1,5 @@
 package com.Automation.StepDefinitions.Web;
 
-import com.Automation.Pages.Web.SeoAutomationPage;
 import com.Automation.Pages.Web.homepageActions;
 import io.cucumber.datatable.DataTable;
 import io.cucumber.java.en.And;

@@ -78,10 +78,11 @@ public class sellPhoneStepDefinitions {
         try {
             List<Map<String, String>> tableRows = table.asMaps();
             Assert.assertTrue(sellPhoneActions.pickUpInformation(tableRows.get(0).get("days"),tableRows.get(0).get("slots"),
-                    tableRows.get(0).get("paymentMethod")));
+                    tableRows.get(0).get("paymentMethod"),tableRows.get(0).get("furtherActivity")));
 
         }catch(Exception e){
 
         }
     }
+
 }
