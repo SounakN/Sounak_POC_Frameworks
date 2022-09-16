@@ -35,12 +35,12 @@ Feature: User can choose Location
       | days | slots | paymentMethod | furtherActivity |
       | 1    | 0     | Upi           | Order Details   |
     Then continue with Order Details
-      | activity | reason                  |
-      | Cancels  | To Give To Someone Else |
+      | activity     | reason             |
+      | Cancel Order | Gave it to someone |
     Examples:
-      | location | Type       | Phone | Model          | Variant | Header                      | HeaderInside            | HeaderAfterSelection                  |
-      | Kolkata  | Top Brands | Apple | Apple iPhone 7 | 128 GB  | Sell Old Apple Mobile Phone | Sell Old Apple iPhone 7 | Sell Old Apple iPhone 7 (2 GB/128 GB) |
-      #| Kolkata  | Top Brands | Samsung | Samsung Galaxy S22 Plus 5G | 8 GB/256 GB | Sell Old Samsung Mobile Phone | Sell Old Samsung Galaxy S22 Plus 5G | Sell Old Samsung Galaxy S22 Plus 5G (8 GB/256 GB) |
+      | location | Type       | Phone   | Model                      | Variant     | Header                        | HeaderInside                        | HeaderAfterSelection                              |
+      | Kolkata  | Top Brands | Apple   | Apple iPhone 7             | 128 GB      | Sell Old Apple Mobile Phone   | Sell Old Apple iPhone 7             | Sell Old Apple iPhone 7 (2 GB/128 GB)             |
+      | Kolkata  | Top Brands | Samsung | Samsung Galaxy S22 Plus 5G | 8 GB/256 GB | Sell Old Samsung Mobile Phone | Sell Old Samsung Galaxy S22 Plus 5G | Sell Old Samsung Galaxy S22 Plus 5G (8 GB/256 GB) |
 
   @BuyPhone
   Scenario Outline: User Buys a phone

@@ -16,7 +16,7 @@ import org.junit.runner.RunWith;
         features = {"src/test/resources/Feature/Web"},
 
         glue = {"com/Automation/StepDefinitions/Web"},
-        tags = "@SellPhone"
+        tags = "@BuyPhone"
 
 )
 public class TestRunner_Web {

@@ -244,7 +244,10 @@ public class sellPhoneActions {
             ActionMethods.embedScreenshot(driver, SetUp.Sc, "");
 
             if(furtherActivity.equals("Order Details")){
-                Assert.assertTrue(buttonClicks(BasicConstants.ORDERDETAILS, false));
+                WebElement orderdetails = ActionMethods.FindElement(By.xpath("//span[text()='Order Details']"),driver,20,5);
+                Assert.assertNotNull(orderdetails);
+                ActionMethods.ScrollIntoView(driver,orderdetails);
+                ActionMethods.JavaScriptClick(driver,orderdetails);
             }
             return true;
         } catch (Exception e) {
