@@ -152,7 +152,7 @@ public class buyPhoneActions {
 
             //Final Validation
             Assert.assertTrue(finalPriceInt == (checkoutPriceInt+shippingPriceInt));
-
+            ActionMethods.embedScreenshot(driver,SetUp.Sc,"Final Page");
             return true;
         }catch(Exception e){
             e.printStackTrace();

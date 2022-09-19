@@ -23,7 +23,7 @@ public class orderDetailsStepDefinition {
     public void continueWithOrderDetails(DataTable table) {
         try{
             List<Map<String, String>> tableRows = table.asMaps();
-            Assert.assertTrue(orderDetailsActions.orderDetailsFromOrderConfirmation(tableRows.get(0).get("activity"),tableRows.get(0).get("reason")));
+            Assert.assertTrue(orderDetailsActions.orderDetailsFromOrderConfirmation(tableRows.get(0).get("activity"),tableRows.get(0).get("reason"),tableRows.get(0).get("cancel")));
         }catch(Exception e){
 
         }

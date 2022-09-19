@@ -1,5 +1,6 @@
 package com.Automation.Pages.Web;
 
+import com.Automation.StepDefinitions.Web.SetUp;
 import com.Automation.driver.BasicConstants;
 import com.Automation.driver.WebBrowser;
 import com.Automation.utilities.ActionMethods;
@@ -10,6 +11,7 @@ import org.junit.Assert;
 
 
 import javax.swing.*;
+import java.util.Locale;
 
 public class orderDetailsActions {
     private WebDriver driver;
@@ -21,14 +23,19 @@ public class orderDetailsActions {
 
     //Constant String
     String radiobuttonforReason = "//span[text()='%s']/preceding-sibling::span//input[@type='radio']";
-
+    String yes_or_no_selection = "//div[text()='Cancel']/following-sibling::div/button/span[text()='%s']";
 
     By pickUpRequested = By.xpath("//div[text()='Pickup Requested']");
     By cancelOrder = By.xpath("//*[text()='Cancel Order'][1]");
     By reasonForCancellation = By.xpath("//span[text()='Reason for cancellation']");
     By pickUpCancelled = By.xpath("//div[text()='Pickup Cancelled']");
+    By confirmForReason = By.xpath("//span[text()='Please tell us the reason']/following-sibling::div/button/span[text()='CONFIRM']");
+    By cancelConfirmationBox = By.xpath("//div[text()='Cancel']");
+    By rateOurService = By.xpath("//div[text()='How would you rate our service?']");
+    By serviceBettermentOptions = By.xpath("//div[text()='What could be better?']/following-sibling::fieldset//label//input");
+    By feedbackButton = By.xpath("//span[text()='Submit Feedback']");
 
-    public boolean orderDetailsFromOrderConfirmation(String activity, String reason){
+    public boolean orderDetailsFromOrderConfirmation(String activity, String reason, String decision){
         try{
             ActionMethods.ScrollIntoView(driver, ActionMethods.FindElement(pickUpRequested, driver, 20,5));
 
@@ -45,12 +52,39 @@ public class orderDetailsActions {
                 Assert.assertNotNull(choiceCancellation);
                 ActionMethods.MoveTo(driver,true, choiceCancellation );
 
-                Assert.assertTrue(commonActions.clickOnButton(BasicConstants.CONFIRM, false));
-                Assert.assertTrue(commonActions.clickOnButton(BasicConstants.YES, false));
+                WebElement confirmForReasonXpath = ActionMethods.FindElement(confirmForReason,driver,20,5);
+                Assert.assertNotNull(confirmForReasonXpath);
+                ActionMethods.ScrollIntoView(driver, confirmForReasonXpath);
+                ActionMethods.JavaScriptClick(driver, confirmForReasonXpath);
 
-                WebElement pickUp_Cancelled = ActionMethods.FindElement(pickUpCancelled,driver,30,4);
-                Assert.assertNotNull(pickUp_Cancelled);
-                ActionMethods.ScrollIntoView(driver, pickUp_Cancelled);
+                ActionMethods.EmbedText(SetUp.Sc,"Selected the Reason :: "+reason);
+
+                WebElement cancelPopUpConfirmation = ActionMethods.FindElement(cancelConfirmationBox,driver,20,5);
+                Assert.assertNotNull(cancelPopUpConfirmation);
+
+                WebElement choiceOfCancellation = ActionMethods.FindElement(ActionMethods.textLocatorCreator.apply(yes_or_no_selection,
+                        decision.toUpperCase(Locale.ROOT)),driver,20,5)   ;
+                Assert.assertNotNull(choiceOfCancellation);
+                ActionMethods.JavaScriptClick(driver, choiceOfCancellation);
+
+                ActionMethods.EmbedText(SetUp.Sc,"In final Confirmation box clicked on :: "+decision);
+
+                WebElement rateService = ActionMethods.FindElement(rateOurService,driver,20,5);
+                Assert.assertNotNull(rateService);
+
+                WebElement ratingService = ActionMethods.FindElement(serviceBettermentOptions,driver,20,5);
+                Assert.assertNotNull(ratingService);
+                ActionMethods.MoveTo(driver,true,ratingService );
+
+                WebElement feedback = ActionMethods.FindElement(feedbackButton,driver,20,5);
+                Assert.assertNotNull(feedback);
+                ActionMethods.ScrollIntoView(driver, feedback);
+                ActionMethods.JavaScriptClick(driver, feedback);
+
+                WebElement pickUpCancelled_xpath = ActionMethods.FindElement(pickUpCancelled,driver, 20, 5);
+                Assert.assertNotNull(pickUpCancelled_xpath);
+                ActionMethods.ScrollIntoView(driver, pickUpCancelled_xpath);
+                ActionMethods.embedScreenshot(driver, SetUp.Sc,"");
             }
 
             return true;

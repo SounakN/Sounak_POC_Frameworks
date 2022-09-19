@@ -35,8 +35,8 @@ Feature: User can choose Location
       | days | slots | paymentMethod | furtherActivity |
       | 1    | 0     | Upi           | Order Details   |
     Then continue with Order Details
-      | activity     | reason             |
-      | Cancel Order | Gave it to someone |
+      | activity     | reason             |cancel|
+      | Cancel Order | Gave it to someone |Yes   |
     Examples:
       | location | Type       | Phone   | Model                      | Variant     | Header                        | HeaderInside                        | HeaderAfterSelection                              |
       | Kolkata  | Top Brands | Apple   | Apple iPhone 7             | 128 GB      | Sell Old Apple Mobile Phone   | Sell Old Apple iPhone 7             | Sell Old Apple iPhone 7 (2 GB/128 GB)             |
